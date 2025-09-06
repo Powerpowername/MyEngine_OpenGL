@@ -1,0 +1,62 @@
+[
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\main.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\main.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/main.cpp",
+  "output": "CMakeFiles/app.dir/main.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\gcc.exe  @CMakeFiles/app.dir/includes_C.rsp -g -o CMakeFiles\\app.dir\\src\\glad.c.obj -c E:\\Project\\MyEngine_OpenGL\\src\\glad.c",
+  "file": "E:/Project/MyEngine_OpenGL/src/glad.c",
+  "output": "CMakeFiles/app.dir/src/glad.c.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\MyEngine.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\MyEngine.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/MyEngine.cpp",
+  "output": "CMakeFiles/app.dir/src/MyEngine.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui_draw.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui_draw.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui_draw.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui_draw.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui_impl_glfw.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui_impl_glfw.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui_impl_glfw.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui_impl_glfw.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui_impl_opengl3.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui_impl_opengl3.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui_impl_opengl3.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui_impl_opengl3.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui_tables.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui_tables.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui_tables.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui_tables.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\imgui_widgets.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\imgui_widgets.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/imgui_widgets.cpp",
+  "output": "CMakeFiles/app.dir/src/imgui_widgets.cpp.obj"
+},
+{
+  "directory": "E:/Project/MyEngine_OpenGL/build",
+  "command": "E:\\Compiler\\mingw64\\bin\\g++.exe  @CMakeFiles/app.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\app.dir\\src\\shader.cpp.obj -c E:\\Project\\MyEngine_OpenGL\\src\\shader.cpp",
+  "file": "E:/Project/MyEngine_OpenGL/src/shader.cpp",
+  "output": "CMakeFiles/app.dir/src/shader.cpp.obj"
+}
+]
