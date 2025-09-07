@@ -111,6 +111,7 @@ protected:
 public:
     ~RenderObject();
     virtual void SetShader(Object* viewObject) = 0;
+    virtual Shader& GetShader() = 0;
     virtual void RenderInit(unsigned int diffuseMap,unsigned int normalMap){};
     virtual void Render(){};
     RenderObject() = default;
@@ -188,7 +189,10 @@ public:
     Cube(vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,1),vec3 right = vec3(1,0,0));
     ~Cube();
     void RenderInit(unsigned int diffuseMap,unsigned int normalMap) override;
-    Shader& GetShader(){return shader;};
+    Shader &GetShader() override
+    {
+        return shader;
+    }
     void SetShader(Object* viewObject) override;
     void Render() override;
     void OnGUI() override;
@@ -355,7 +359,7 @@ public:
     PointLight(const PointLight& ) = delete;
     PointLight(PointLight&) = delete;
     PointLight& operator=(const PointLight&) = delete;
-    PointLight(PointLight&& other);
+    PointLight(PointLight&& other); 
 
 };
 #pragma endregion

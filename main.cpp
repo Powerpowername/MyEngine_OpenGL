@@ -93,32 +93,6 @@ int main()
     QuaternionCamera camera;
     Setting::MainCamera = &camera;
 
-#pragma region Shader与纹理配置
-//E:/Project/MyEngine_OpenGL/shader/shadowShadow
-    // Shader renderShadowDepthShader("./shader/shadowShadow/shadow.vs","./shader/shadowShadow/shadow.fs");
-    // Shader renderShader("./shader/objectShader/object.vs","./shader/objectShader/object.fs");
-    // Shader renderShadowDepthShader("../../shader/shadowShadow/shadow.vs","../../shader/shadowShadow/shadow.fs");
-    // Shader renderShader("../../shader/objectShader/object.vs","../../shader/objectShader/object.fs");
-    // Shader skyBoxRender("../../shader/skyBox/skyBox.vs","../../shader/skyBox/skyBox.fs");
-    // Shader modelShader("../../shader/modelShader/modelShader.vs","../../shader/modelShader/modelShader.fs");
-    
-    // unsigned int diffuseMap = loadTexture("E:\\LearnOpenGL-master\\resources\\textures\\bricks2.jpg",false);
-	// unsigned int normalMap = loadTexture("E:\\LearnOpenGL-master\\resources\\textures\\bricks2_normal.jpg", false);
-
-
-#pragma endregion
-    // Cube cube;
-    // cube.RenderInit(diffuseMap,normalMap);
-    // std::vector<string> faces{
-    //     "../../resource/skyBox/right.jpg",
-    //     "../../resource/skyBox/left.jpg",
-    //     "../../resource/skyBox/top.jpg",
-    //     "../../resource/skyBox/bottom.jpg",
-    //     "../../resource/skyBox/front.jpg",
-    //     "../../resource/skyBox/back.jpg"};
-    // SkyBox skyBox;
-    // skyBox.RenderInit(faces);
-
     auto start = std::chrono::system_clock::now();
     //model resource/object/backpack
     // Model piano("../../resource/object/backpack/backpack.obj");
@@ -140,60 +114,11 @@ int main()
         float deltaTime = io.DeltaTime; // 每帧间隔时间单位：秒
         glClearColor(0.2,0.2,0.5,1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 清屏（颜色缓冲 + 深度缓冲）
-        /*
-        GUi
-        */
-        // Setting::MainCamera->OnGUI();
-//         cube.OnGUI();
-//         skyBox.OnGUI();
-//         dirctionLight.OnGUI();
-//         pointLight.OnGUI();
-//         spotLight.OnGUI();
-// //         glEnable(GL_CULL_FACE);
-// // glCullFace(GL_FRONT); // 剔除正面而不是背面
-//         // glDisable(GL_CULL_FACE);
-//         //model
-//         modelShader.use();
 
-
-//         modelShader.setMat4("projection",Setting::MainCamera->GetProjectionMatrixTransposed());
-//         modelShader.setMat4("view", Setting::MainCamera->GetViewMatrixTransposed());
-//         glm::mat4 model = glm::mat4(1.0f);
-//         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-//         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	
-//         modelShader.setMat4("model", model);
-//         piano.Draw(modelShader);
-
-
-
-//         dirctionLight.SetShader(renderShader);
-//         pointLight.SetShader(renderShader);
-//         spotLight.SetShader(renderShader);
-//         skyBox.SetShader(skyBoxRender,Setting::MainCamera->transfrom.get());
-//         skyBox.Render(skyBoxRender);
-
-//         cube.SetShader(renderShader,Setting::MainCamera->transfrom.get());
-//         cube.Render(renderShader);
-
-        
-
-//         /*
-//         UpDate
-//         */
-//         cube.Update();
-//         skyBox.Update();
-//         dirctionLight.Update();
-//         pointLight.Update();
-//         spotLight.Update();
-        // Setting::MainCamera->SetShader(renderShader);
-        // Setting::MainCamera->Update();
         Factory::ControlGui();
-        //std::cout<<"object num: "<<Setting::cubes.size()+Setting::models.size()+Setting::skyBoxs.size()+Setting::dirctionLights.size()+Setting::pointLights.size()+Setting::spotLights.size()<<std::endl;
         Factory::OnGui();
         Factory::Render();
         Factory::Update();
-
-
 
 
         // 渲染ImGui
