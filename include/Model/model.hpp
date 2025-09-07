@@ -1,34 +1,47 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "stb_image/stb_image.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
 #include "mesh.hpp"
 #include "shader.h"
-
+#include "MyEngine.h"
 #include <string>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-
+#include "QuaternionTransForm.hpp"
 #include <deque>
 using std::string,std::unordered_map,std::vector;
-
-
-
+static int ModelNum;
 class Model
 {
 public:
+    
+    std::unique_ptr<QuaternionTransForm> transform = nullptr;
     vector<Texture> textures_loaded;
     vector<Mesh> meshes;
     string directory;
     bool gammaCorrection;
     Model(string const &path,bool gamma);
-    void Draw(Shader& shader);
+    void SetShader(Object* viewObject);
+    void Render();
+    void OnGUI()
+    {
+        transform->OnGUI();
+    }
+
+    void Update()
+    {
+        transform->Update();
+    }
 private:
+    
+    int ID = -1;
+    Shader shader;
+
     void loadModel(string const &path);
     void processNode(aiNode* node,const aiScene* scence);//递归实现
     void processNodeQueueManus(aiNode* node,const aiScene* scence);//层次遍历实现
@@ -39,13 +52,27 @@ private:
 
 
 };
-
-inline Model::Model(string const &path,bool gamma =false) :gammaCorrection(gamma)
+inline Model::Model(string const &path,bool gamma =false) :gammaCorrection(gamma),shader("../../shader/modelShader/modelShader.vs","../../shader/modelShader/modelShader.fs")
 {
+    transform = std::make_unique<QuaternionTransForm>();
+    ID++;
+    transform->name = "Model" + std::to_string(ID);
+    transform->moveObject = QuaternionTransForm::MoveObject::RENDEROBJECT;
     loadModel(path);
 }
 
-inline void Model::Draw(Shader &shader)
+inline void Model::SetShader(Object* viewObject)
+{
+    shader.use();
+    QuaternionTransForm* viewTransform = dynamic_cast<QuaternionTransForm*>(viewObject);
+    shader.setMat4("projection",viewTransform->GetProjectionMatrixTransposed());
+    shader.setMat4("view", viewTransform->GetViewMatrixTransposed());
+    shader.setMat4("model", transform->GetModeMatrixTransposed());
+
+
+}
+
+inline void Model::Render()
 {
     for(unsigned int i = 0;i < meshes.size();i++)
         meshes[i].Draw(shader);

@@ -4,122 +4,34 @@
 #define GLM_ENABLE_EXPERIMENTAL 
 #define GLEW_STATIC
 #define var auto
-#include <memory>
-#include <string>
-#include "imgui.h"
-#include "glm/glm.hpp"
-#include <glm/gtc/quaternion.hpp>
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtx/rotate_vector.hpp"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"//glfw需要使用glad的定义，所以要在gald之后
-#include <functional>
-#include "shader.h"
-using std::string;
-using glm::vec3,glm::vec2,glm::mat3,glm::mat4,glm::quat;
-// #pragma region 类名前向声明
-// class Object;
-// class QuaternionTransForm;//包含摄像机与普通绘制物体的四元数实现的旋转变化与位移变化
-// class Input;
-// class QuaternionCamera;
-// class Setting;//管理窗口和全局其他对象
-// #pragma endregion
+#include "QuaternionTransForm.hpp"
+#include "Model/model.hpp"
+// using std::string,std::unique_ptr,std::make_unique;
+// using glm::vec3,glm::vec2,glm::mat3,glm::mat4,glm::quat;
+#pragma region 类名前向声明
+class Input;
+class QuaternionCamera;
+class Setting;//管理窗口和全局其他对象
 
-#pragma region Object
-class Object
-{
-public:
-    //拷贝构造、拷贝赋值、析构函数均未显式定义，且未显式声明移动操作，才会自动生成移动构造函数
-    string name;
-    //function
-    Object() = default;
-    //纯虚析构函数必须要有定义，不然没法释放资源
-    virtual ~Object();
-    virtual void OnGUI() = 0;
-    virtual void Update() = 0;
-};
+
+class CubeFactory;
+class LightFactory;
+class DirctionLightFactory;
+class PointLightFactory;
+class SpotLightFactory;
+class SkyBoxFactory;
+class ModelFactory;
+class Cube;
+class DirctionLight;
+
+
+class PointLight;
+class SpotLight;
+class RenderObject;
+class Factory;//工厂类，管理所有工厂
+unsigned int loadTexture(const char*  path,bool reverse);
 #pragma endregion
 
-#pragma region QuaternionTransForm : public Object
-class QuaternionTransForm : public Object
-{
-protected:
-    //是否是透视投影
-    bool perspective = true;
-    //旋转
-    quat rotationQuat{1,0,0,0};//旋转四元数
-    vec3 slefDefineAxis{1,0,0};//自定义转轴,给定一个初始值x轴，防止0，0，0的未定义行为
-    float slefDefineInitRotation = 0;//自定以转轴的初始旋转量，一般为0
-    float slefDefineTargetRotate = 0;//自定义转轴的目标值
-    float mouseSensitivity = 0.1f;
-    vec3 initPosition{0,0,0};//初始位置
-    vec3 initRotation{0,0,0};//初始旋转角度（先旋转在位移的标准实现吗，也就是说物体在世界坐标系上旋转之后再进行位移），一般为0
-    vec3 targetRotation{0,0,0};
-    void Rotate();//计算世界坐标系绕XYZ轴旋转的四元数,之后再位移即可实现自传
-    void SelfDefineAxisRotate();//计算自定义转轴选转的四元数
-
-    //更新矩阵
-    void UpdateProjection();
-    void UpdateView();
-    void UpdataScle();
-    void UpdateTranslate();
-    void UpdateCoordinateSystem(quat rotateQuat);
-    mat4 modeMatrixTransposed{1};
-    mat4 viewMatrixTransposed{1};
-    mat4 projMatrixTransposed{1};
-
-public: 
-    //移动对象类型
-    enum class MoveObject
-    {
-        CAMERA,
-        RENDEROBJECT,
-        DEFAULT
-    } moveObject;
-
-    //移动方向
-    enum class Movement
-    {
-        FORMWARD,
-        BACKWARD,
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    } movement;
-
-    bool enbaleMouse = false;
-    //自身坐标系相关属性
-    vec3 position{0,0,0};
-    vec3 right{0,0,0};
-    vec3 up{0,0,0};
-    vec3 forward{0,0,0};
-    vec3 initForward{0,0,0};//选转前向量初始值
-    vec3 initRight{0,0,0};//选转右向量初始值
-    float fovY = 0;//视角
-    float aspectRatio = 0;//高宽比
-    float nearZ = 0;
-    float farZ = 0;
-    
-    //旋转
-    bool selfRoationAxisFlag = true;// 是否为自转标志位
-    //缩放
-    vec3 scale = vec3(1,1,1);
-
-    //function
-    QuaternionTransForm(QuaternionTransForm::MoveObject moveObject,vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(1,0,0),float fovY = 90.0f,float aspectRatio = 16.0f/9.0f,float nearZ = 0.1f,float farZ = 100.0f);
-    ~QuaternionTransForm() override;
-    void SetIsPerspective(bool isPerspective);
-    mat4 GetViewMatrixTransposed();
-    mat4 GetProjectionMatrixTransposed();
-    mat4 GetModeMatrixTransposed();
-    void MouseMove(float xposIn,float yposIn);//鼠标移动的回调事件
-    void MouseScroll(float yoffset);
-    void KeyBoardMove(float delta);//CAMERA的移动方式
-    void OnGUI() override;
-    void Update() override;
-}; 
-#pragma endregion
 
 #pragma region Input
 class Input
@@ -195,13 +107,12 @@ protected:
     unsigned int tangentMap = 0;
     unsigned int bittangentMap = 0;
     std::unique_ptr<QuaternionTransForm> transform = nullptr;
-
     // std::unique_ptr<float> vertices = nullptr;
 public:
     ~RenderObject();
-    virtual void SetShader(Shader &shader,Object* viewObject) = 0;
+    virtual void SetShader(Object* viewObject) = 0;
     virtual void RenderInit(unsigned int diffuseMap,unsigned int normalMap){};
-    virtual void Render(Shader& shader){};
+    virtual void Render(){};
     RenderObject() = default;
     RenderObject(const RenderObject&) = delete;
     RenderObject(RenderObject&) = delete;
@@ -271,14 +182,15 @@ private:
     -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, 0.0f
     };
-
+    Shader shader;
 public:
     
     Cube(vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,1),vec3 right = vec3(1,0,0));
     ~Cube();
     void RenderInit(unsigned int diffuseMap,unsigned int normalMap) override;
-    void SetShader(Shader &shader,Object* viewObject) override;
-    void Render(Shader& shader) override;
+    Shader& GetShader(){return shader;};
+    void SetShader(Object* viewObject) override;
+    void Render() override;
     void OnGUI() override;
     void Update() override;
 
@@ -290,7 +202,7 @@ public:
 };
 #pragma endregion
 
-#pragma region SkyBox : publicObject
+#pragma region SkyBox : public Object
 class SkyBox : public Object
 {
 protected:
@@ -328,7 +240,7 @@ protected:
     unsigned int textureID = 0;//天空盒子的纹理
     std::unique_ptr<QuaternionTransForm> transfrom = nullptr;
     // std::vector<string> face;
-
+    Shader shader;
 public:
 
     SkyBox();
@@ -337,8 +249,9 @@ public:
     
 
     void RenderInit(const std::vector<string>& faces);//加载天空盒子
-    void SetShader(Shader& shader,Object* viewObject);
-    void Render(Shader& shader);
+    void SetShader(Object* viewObject);
+    Shader& GetShader(){return shader;};
+    void Render();
     void OnGUI() override;
     void Update() override;
     
@@ -374,7 +287,7 @@ public:
     // void SetDepthResolution(unsigned int ShadowWidth,unsigned int ShadowHeight);//设置深度纹理的分辨率
     virtual ~AbstractLight();
     // virtual void ConfigShadow(unsigned int depthMapFBO,unsigned int depthMap) = 0;//配置深度缓冲帧与深度纹理附件
-    virtual void SetShader(Shader& shader) = 0;//给正常绘制的shader的配置接口
+    virtual void SetShader(Shader& shader ,bool selectLight) = 0;//给正常绘制的shader的配置接口
     // virtual void SetDepthShader(Shader& depthShader) = 0;//专为绘制阴影shader的接口配置
     /// @brief 使用绘制深度纹理的shader和被绘制对象的绘制函数来绘制深度纹理
     /// @param depthShader 绘制深度纹理的shader
@@ -399,11 +312,11 @@ protected:
     int dirctionLightID = -1;
     
 public:
-    DirctionLight(vec3 lightColor,vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
-    ~DirctionLight(){};
+    DirctionLight(vec3 lightColor = vec3(1,1,1),vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
+    ~DirctionLight(){dirctionLightNum--;};
 
     // void ConfigShadow(unsigned int depthMapFBO,unsigned int depthMap) override;
-    void SetShader(Shader& shader) override;
+    void SetShader(Shader& shader ,bool selectLight = 1) override;
     // void SetDepthShader(Shader& depthShader) override;
     // void RenderDepth(Shader& depthShader,std::function<void(Shader& shader)>) override;
     void OnGUI() override;
@@ -432,10 +345,10 @@ protected:
 	float quadratic = 0.07f;
 
 public:
-    PointLight(vec3 lightColor,vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
-    ~PointLight(){};
+    PointLight(vec3 lightColor = vec3(1,1,1),vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
+    ~PointLight(){pointLightNum--;};
 
-    void SetShader(Shader& shader) override;
+    void SetShader(Shader& shader,bool selectLight = 1) override;
     void OnGUI() override;
     void Update() override;
 
@@ -462,10 +375,13 @@ protected:
 	float cosPhyOuter= 20.0f;//外圈
 
 public:
-    SpotLight(vec3 lightColor,vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
-    ~SpotLight(){};
+    SpotLight(vec3 lightColor = vec3(1,1,1),vec3 position = vec3(0,0,0),vec3 forward = vec3(0,0,-1),vec3 right = vec3(-1,0,0));
+    ~SpotLight() 
+    { 
+        spotLightNum--; 
+    };
 
-    void SetShader(Shader& shader) override;
+    void SetShader(Shader& shader,bool selectLight = 1) override;
     void OnGUI() override;
     void Update() override;
 
@@ -478,31 +394,488 @@ public:
 
 #pragma region Setting
 //尝试使用工厂模式设计
+
 class Setting
 {
 public:
     static QuaternionCamera* MainCamera;
     static GLFWwindow* window;
     static glm::vec2 pWindowSize;//真正的窗口尺寸
-
-
+    static vector<unique_ptr<QuaternionCamera>> cameras;
+    static vector<unique_ptr<SkyBox>> skyBoxs;
+    static vector<unique_ptr<Cube>> cubes;
+    static vector<unique_ptr<Model>> models;
+    static vector<unique_ptr<DirctionLight>> dirctionLights;
+    static vector<unique_ptr<PointLight>> pointLights;
+    static vector<unique_ptr<SpotLight>> spotLights;
+    // friend Factory;
 };
-
 
 class CameraFactory
 {
 protected:
 
-
-
 public:
-
+    static unique_ptr<QuaternionCamera> CreateObject()
+    {
+        return make_unique<QuaternionCamera>();
+    }
 
 };
+
+class SkyFactory
+{
+protected:
+
+public:
+    static unique_ptr<SkyBox> CreateObject()
+    {
+        return make_unique<SkyBox>();
+    }
+};
+
+class CubeFactory
+{
+protected:
+
+public:
+    static unique_ptr<Cube> CreateObject()
+    {
+        return make_unique<Cube>();
+    }
+};
+
+class ModeFactory
+{
+protected:
+
+public:
+    static unique_ptr<Model> CreateObject(const string& path)
+    {
+        return make_unique<Model>(path);
+    }
+};
+
+
+class DirctionLightFactory
+{
+protected:
+
+public:
+    static unique_ptr<DirctionLight> CreateObject()
+    {
+        return make_unique<DirctionLight>();
+    }
+};
+
+class PointLightFactory
+{
+protected:
+
+public:
+    static unique_ptr<PointLight> CreateObject()
+    {
+        return make_unique<PointLight>();
+    }
+};
+
+class SpotLightFactory
+{
+protected:
+
+public:
+    static unique_ptr<SpotLight> CreateObject()
+    {
+        return make_unique<SpotLight>();
+    }
+};
+
+class Factory
+{
+protected:
+    static void createCamera()
+    {
+        Setting::cameras.push_back(CameraFactory::CreateObject());
+    }
+    static void deleteCamera()
+    {
+        Setting::cameras.pop_back();
+    }
+    static void createSkyBox()
+    {
+        // Setting::skyBoxs.push_back(SkyFactory::CreateObject());
+        if(ImGui::BeginPopupModal("Please Input SkyBox Resource Path",NULL,ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            std::vector<string> faces(6);
+            char rightPath[256]{"../../resource/skyBox\\right.jpg"};
+            ImGui::InputText("Right Face Path",rightPath,IM_ARRAYSIZE(rightPath));
+            faces[0] = rightPath;
+            char leftPath[256]{"../../resource/skyBox\\left.jpg"};
+            ImGui::InputText("Left Face Path",leftPath,IM_ARRAYSIZE(leftPath));
+            faces[1] = leftPath;
+            char topPath[256]{"../../resource/skyBox\\top.jpg"};
+            ImGui::InputText("Top Face Path",topPath,IM_ARRAYSIZE(topPath));
+            faces[2] = topPath;
+            char bottomPath[256]{"../../resource/skyBox\\bottom.jpg"};
+            ImGui::InputText("Bottom Face Path",bottomPath,IM_ARRAYSIZE(bottomPath));
+            faces[3] = bottomPath;
+            char frontPath[256]{"../../resource/skyBox\\front.jpg"};
+            ImGui::InputText("Front Face Path",frontPath,IM_ARRAYSIZE(frontPath));
+            faces[4] = frontPath;
+            char backPath[256]{"../../resource/skyBox\\back.jpg"};
+            ImGui::InputText("Back Face Path",backPath,IM_ARRAYSIZE(backPath));
+            faces[5] = backPath;
+
+            if (ImGui::Button("Add"))
+            {
+                Setting::skyBoxs.push_back(SkyFactory::CreateObject());
+                Setting::skyBoxs.back()->RenderInit(faces);
+                ImGui::CloseCurrentPopup();
+            }
+            // 取消按钮：仅关闭弹窗，不创建任何内容
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel"))
+            {
+                Setting::skyBoxs.pop_back();
+                ImGui::CloseCurrentPopup(); // 取消也关闭弹窗
+            }
+            ImGui::EndPopup();
+        }
+
+    }
+    static void deleteSkyBox()
+    {
+        Setting::skyBoxs.pop_back();
+    }
+    static void createCube()
+    {
+        //打开模态弹窗
+        if(ImGui::BeginPopupModal("Please Input Cube Resource Path",NULL,ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            unsigned int diffuseMap;
+            unsigned int normalMap; 
+            char diffusePath[256]{"E:\\LearnOpenGL-master\\resources\\textures\\bricks2.jpg"};
+            ImGui::InputText("Cube Resource diffusePath",diffusePath,IM_ARRAYSIZE(diffusePath));
+            char normalPath[256]{"E:\\LearnOpenGL-master\\resources\\textures\\bricks2_normal.jpg"};
+            ImGui::InputText("Cube Resource normalPath",normalPath,IM_ARRAYSIZE(normalPath));
+
+            if (ImGui::Button("Add"))
+            {
+                diffuseMap = loadTexture(diffusePath, false);
+                normalMap = loadTexture(normalPath, false);
+                // std::cout << "diffuseMap ID: " << diffuseMap << std::endl;
+                // std::cout << "normalMap ID: " << normalMap << std::endl;
+                Setting::cubes.push_back(CubeFactory::CreateObject());
+                Setting::cubes.back()->RenderInit(diffuseMap, normalMap);
+                ImGui::CloseCurrentPopup();
+            }
+            // 取消按钮：仅关闭弹窗，不创建任何内容
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel"))
+            {
+                ImGui::CloseCurrentPopup(); // 取消也关闭弹窗
+            }
+            ImGui::EndPopup();
+        }
+
+    }
+    static void deleteCube()
+    {
+        Setting::cubes.pop_back();
+    }
+    static void createModel()
+    {
+        static char path[256] = "../../resource/object/backpack/backpack.obj";
+        if(ImGui::BeginPopupModal("Please Input Model Resource Path",NULL,ImGuiWindowFlags_AlwaysAutoResize))//自动调整大小
+        {
+            ImGui::InputText("Model Resource Path",path,IM_ARRAYSIZE(path));
+            if(ImGui::Button("Add"))
+            {
+                Setting::models.push_back(ModeFactory::CreateObject(string(path)));
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if(ImGui::Button("Cancel"))
+                ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+        }
+        // Setting::models.push_back(ModeFactory::CreateObject(path));
+    }
+    static void deleteModel()
+    {
+        Setting::models.pop_back();
+    }
+    static void createDirctionLight()
+    {
+        Setting::dirctionLights.push_back(DirctionLightFactory::CreateObject());
+    }
+    static void deleteDirctionLight()
+    {
+        Setting::dirctionLights.pop_back();
+    }
+    static void createPointLight()
+    {
+        Setting::pointLights.push_back(PointLightFactory::CreateObject());
+    }
+    static void deletePointLight()
+    {
+        Setting::pointLights.pop_back();
+    }
+    static void createSpotLight()
+    {
+        Setting::spotLights.push_back(SpotLightFactory::CreateObject());
+    }
+    static void deleteSpotLight()
+    {
+        Setting::spotLights.pop_back();
+    }
+public:
+#pragma region 添加与删除对象
+    static  void ControlGui()
+    {
+        ImGui::Begin("Control Panel");
+        //Camera
+        ImGui::Separator();
+        if(ImGui::Button("Add Camera"))
+        {
+            createCamera();
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Delete Camera"))
+        {
+            if(Setting::cameras.size() != 0)
+                deleteCamera();
+
+        }
+        ImGui::Text("Current Camera Num: %d",Setting::cameras.size());
+
+        //SkyBox
+        ImGui::Separator();
+        if(ImGui::Button("Add SkyBox"))
+        {
+            //打开模态弹窗
+            ImGui::OpenPopup("Please Input SkyBox Resource Path");
+        }
+        createSkyBox();
+        ImGui::SameLine();
+        if(ImGui::Button("Delete SkyBox"))
+        {
+            if(Setting::skyBoxs.size() != 0)
+                deleteSkyBox();
+
+        }
+        ImGui::Text("Current SkyBox Num: %d",Setting::skyBoxs.size());
+
+        //Cube
+        ImGui::Separator();
+        if(ImGui::Button("Add Cube"))
+        {
+            //打开模态弹窗
+            ImGui::OpenPopup("Please Input Cube Resource Path");
+        }
+        createCube();
+        
+        ImGui::SameLine();
+        if(ImGui::Button("Delete Cube"))
+        {
+            if(Setting::cubes.size() != 0)
+                deleteCube();
+        }
+        ImGui::Text("Current Cube Num: %d",Setting::cubes.size());
+
+        //DirctionLight
+        ImGui::Separator();
+        if(ImGui::Button("Add DirctionLight"))
+        {
+            createDirctionLight();
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Delete DirctionLight"))
+        {
+            if(Setting::dirctionLights.size() != 0)
+                deleteDirctionLight();
+        }
+        ImGui::Text("Current DirctionLight Num: %d",Setting::dirctionLights.size());
+
+        //PointLight
+        ImGui::Separator();
+        if(ImGui::Button("Add PointLight"))
+        {
+            createPointLight();
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Delete PointLight"))
+        {
+            if(Setting::pointLights.size() != 0)
+                deletePointLight();
+        }
+        ImGui::Text("Current PointLight Num: %d",Setting::pointLights.size());
+
+        //SpotLight
+        ImGui::Separator();
+        if(ImGui::Button("Add SpotLight"))
+        {
+            createSpotLight();
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Delete SpotLight"))
+        {
+            if(Setting::spotLights.size() != 0)
+                deleteSpotLight();
+        }
+        ImGui::Text("Current SpotLight Num: %d",Setting::spotLights.size());
+
+        //Model
+        ImGui::Separator();
+        if(ImGui::Button("Add Model"))
+        {
+            //打开模态弹窗
+            ImGui::OpenPopup("Please Input Model Resource Path");
+            // //打开模态弹窗
+            // if(ImGui::BeginPopupModal("Please Input Model Resource Path",NULL,ImGuiWindowFlags_AlwaysAutoResize))//自动调整大小
+            // {
+            //     char modelPath[256];
+            //     ImGui::InputText("Model Resource Path",modelPath,IM_ARRAYSIZE(modelPath));
+            //     if(ImGui::Button("Add"))
+            //     {
+            //         createModel(string(modelPath));
+            //         ImGui::CloseCurrentPopup();
+            //     }
+            //     ImGui::SameLine();
+            //     if(ImGui::Button("Cancel"))
+            //         ImGui::CloseCurrentPopup();
+            //     ImGui::EndPopup();
+            // }
+        }
+        createModel();
+        ImGui::SameLine();
+        if(ImGui::Button("Delete Model"))
+        {
+            if(Setting::models.size() != 0)
+                deleteModel();
+        }
+        ImGui::Text("Current Model Num: %d",Setting::models.size());
+
+        ImGui::End();
+    }
+
 #pragma endregion
 
 
 
-unsigned int loadTexture(const char*  path,bool reverse);
+    
+    static void Render()
+    {
+        //配置绘制对象
+        for(auto& it : Setting::cubes)
+        {
+            //设置光源
+            for(auto& dirLight : Setting::dirctionLights)
+                dirLight->SetShader(it->GetShader());
+            for(auto& pointLight : Setting::pointLights)
+                pointLight->SetShader(it->GetShader());
+            for(auto& spotLight : Setting::spotLights)
+                spotLight->SetShader(it->GetShader());
+            // std::cout<<"dfa"<<std::endl;
+            //设置MVP
+            it->SetShader(Setting::MainCamera->transfrom.get());
+            //渲染
+            it->Render();
+        }
+
+
+
+        
+        for(auto& it : Setting::skyBoxs)
+        {
+            //设置MVP
+            it->SetShader(Setting::MainCamera->transfrom.get());
+            //渲染
+            it->Render();
+        }
+
+        for(auto& it : Setting::models)
+        {
+            //设置MVP
+            it->SetShader(Setting::MainCamera->transfrom.get());
+            //渲染
+            it->Render();
+        }
+        
+
+
+
+        //重置绘制对象的光源状态
+        for(auto& it : Setting::cubes)
+        {
+            //设置光源
+            for(auto& dirLight : Setting::dirctionLights)
+                dirLight->SetShader(it->GetShader(),0);
+            for(auto& pointLight : Setting::pointLights)
+                pointLight->SetShader(it->GetShader(),0);
+            for(auto& spotLight : Setting::spotLights)
+                spotLight->SetShader(it->GetShader(),0);
+            // // std::cout<<"dfa"<<std::endl;
+            // //设置MVP
+            // it->SetShader(Setting::MainCamera->transfrom.get());
+            // //渲染
+            // it->Render();
+        }
+
+    }
+
+
+
+
+
+    static void OnGui()
+    {
+        ImGui::Begin("Obejct Gui");
+        for(auto& camera : Setting::cameras)
+            camera->OnGUI();
+        for(auto& skyBox : Setting::skyBoxs)
+            skyBox->OnGUI();
+        for(auto& cube : Setting::cubes)
+            cube->OnGUI();
+        for(auto& model : Setting::models)
+            model->OnGUI();
+        for(auto& dirLight : Setting::dirctionLights)
+            dirLight->OnGUI();
+        for(auto& pointLight : Setting::pointLights)
+            pointLight->OnGUI();
+        for(auto& spotLight : Setting::spotLights)
+            spotLight->OnGUI();
+        ImGui::End();
+    }
+    static void Update()
+    {
+        if(Setting::cameras.empty() != true )
+            Setting::MainCamera = Setting::cameras.front().get();
+        for(auto& camera : Setting::cameras)
+            camera->Update();
+        for(auto& skyBox : Setting::skyBoxs)
+            skyBox->Update();
+        for(auto& cube : Setting::cubes)
+            cube->Update();
+        for(auto& model : Setting::models)
+            model->Update();
+        for(auto& dirLight : Setting::dirctionLights)
+            dirLight->Update();
+        for(auto& pointLight : Setting::pointLights)
+            pointLight->Update();
+        for(auto& spotLight : Setting::spotLights)
+            spotLight->Update();
+    }
+
+
+
+
+};
+
+
+
+#pragma endregion
+
+
 
 

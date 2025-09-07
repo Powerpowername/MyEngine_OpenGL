@@ -1,6 +1,7 @@
 CMakeFiles/app.dir/src/MyEngine.cpp.obj: \
  E:\Project\MyEngine_OpenGL\src\MyEngine.cpp \
  E:/Project/MyEngine_OpenGL/include/MyEngine.h \
+ E:/Project/MyEngine_OpenGL/include/QuaternionTransForm.hpp \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/memory \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/memoryfwd.h \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -389,4 +390,49 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/math.h \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/emmintrin.h \
  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/xmmintrin.h \
- E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/mmintrin.h
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/mmintrin.h \
+ E:/Project/MyEngine_OpenGL/include/Model/model.hpp \
+ E:/Project/MyEngine_OpenGL/include/assimp/Importer.hpp \
+ E:/Project/MyEngine_OpenGL/include/assimp/types.h \
+ E:/Compiler/mingw64/x86_64-w64-mingw32/include/sys/types.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/defs.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/config.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/vector2.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/vector3.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/color4.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/matrix3x3.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/matrix4x4.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/quaternion.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstring \
+ E:/Project/MyEngine_OpenGL/include/assimp/vector2.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/vector3.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/color4.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/matrix3x3.inl \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/algorithm \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_algo.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/algorithmfwd.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_heap.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/uniform_int_dist.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/glue_algorithm_defs.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/matrix4x4.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/MathFunctions.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/quaternion.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/scene.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/texture.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/Compiler/pushpack1.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/Compiler/poppack1.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/mesh.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/aabb.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/unordered_set \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/unordered_set.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/light.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/camera.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/material.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/material.inl \
+ E:/Project/MyEngine_OpenGL/include/assimp/anim.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/metadata.h \
+ E:/Project/MyEngine_OpenGL/include/assimp/postprocess.h \
+ E:/Project/MyEngine_OpenGL/include/Model/mesh.hpp \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/deque \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_deque.h \
+ E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/deque.tcc

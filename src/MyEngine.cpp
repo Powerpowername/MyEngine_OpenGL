@@ -1,230 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION  
 #include "MyEngine.h"
 #include <cassert>
-#include "stb_image/stb_image.h"
-#pragma region
-Object::~Object()
-{
-}
 
-#pragma endregion
-
-#pragma region QuaternionTransForm : public Object
-// vec3 QuaternionTransForm::worldUp = vec3(0,1,0);
-QuaternionTransForm::QuaternionTransForm(QuaternionTransForm::MoveObject moveObject = QuaternionTransForm::MoveObject::DEFAULT,
-    vec3 position, vec3 forward,vec3 right, 
-    float fovY, float aspectRatio, float nearZ, float farZ)
-    :moveObject(moveObject),position(position),forward(forward),right(right),
-    fovY(fovY),aspectRatio(aspectRatio),nearZ(nearZ),farZ(farZ),
-    initForward(forward),initRight(right),
-    initPosition(position)
-{
-    name = "QuaternionTransForm_";
-    // rotationQuat = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-    Update();//此处一定要更新project矩阵 view矩阵，up向量
-}
-
-QuaternionTransForm::~QuaternionTransForm()
-{
-}
-
-void QuaternionTransForm::SetIsPerspective(bool isPerspective)
-{
-    perspective = isPerspective;
-}
-
-mat4 QuaternionTransForm::GetViewMatrixTransposed()
-{
-    return viewMatrixTransposed;
-}
-
-mat4 QuaternionTransForm::GetProjectionMatrixTransposed()
-{
-    return projMatrixTransposed;
-}
-
-mat4 QuaternionTransForm::GetModeMatrixTransposed()
-{
-    return modeMatrixTransposed;
-}
-
-void QuaternionTransForm::Update()
-{
-    //处理旋转逻辑
-    if(selfRoationAxisFlag == false)
-    {
-        //自转
-        Rotate();
-    }
-    else
-    {
-        SelfDefineAxisRotate();//计算自定义转轴选转的四元数
-    }
-    //更新局部坐标系
-
-    rotationQuat = glm::normalize(rotationQuat);//归一化防止误差
-    UpdateCoordinateSystem(rotationQuat);//更新局部坐标系
-
-    if (moveObject == MoveObject::CAMERA)
-    {
-        //因为摄像机正常情况下是不需要传入mode矩阵的所以这里就没有处理了
-        UpdateProjection();
-        UpdateView();
-    }
-
-    else if(moveObject == MoveObject::RENDEROBJECT)
-    {
-        modeMatrixTransposed = mat4(1);
-        //缩放->旋转->位移
-        UpdataScle();
-        modeMatrixTransposed = glm::mat4_cast(rotationQuat) * modeMatrixTransposed;//旋转
-        UpdateTranslate();//更新位移modeMatrixTransposed
-
-
-        UpdateProjection();
-        UpdateView();
-    }
-
-}
-
-void QuaternionTransForm::UpdateProjection()
-{
-    if(perspective)
-        projMatrixTransposed = glm::perspective(glm::radians(fovY),aspectRatio,nearZ,farZ);
-    else
-        projMatrixTransposed = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f,nearZ,farZ);
-}
-
-void QuaternionTransForm::UpdateView()
-{
-    //lookAt函数的参数是targetPosition,是看向的目标点
-    viewMatrixTransposed = glm::lookAt(position,position + forward,up);
-}
-
-void QuaternionTransForm::UpdataScle()
-{
-    modeMatrixTransposed = glm::scale(modeMatrixTransposed, scale);
-}
-
-/// @brief 根据位移变换位移矩阵
-/// @param delta 位移量
-void QuaternionTransForm::UpdateTranslate()
-{
-    vec3 deltaTranslate = position - initPosition;
-    modeMatrixTransposed = glm::translate(modeMatrixTransposed, deltaTranslate);
-}
-
-void QuaternionTransForm::UpdateCoordinateSystem(quat rotateQuat)
-{
-    rotateQuat = glm::normalize(rotateQuat);//归一化防止误差
-
-    mat3 rotationMat = glm::mat3_cast(rotateQuat); // 使用四元数生成旋转矩阵,glm::mat3(mQuaternionRotation)不行
-
-    // 处理选转逻辑
-    forward = glm::normalize(rotationMat * initForward);
-
-    right = glm::normalize(rotationMat * initRight);
-    // 因为现在增加了roll所以就不可以用下面的方式更新right了
-    //  mRight = glm::normalize(glm::cross(mForward,worldUp));
-    up = glm::normalize(glm::cross(right, forward));
-}
-
-void QuaternionTransForm::Rotate()
-{
-    //自转
-    vec3 deltaRotation = targetRotation - initRotation;
-    //yaw,pitch,roll的顺序
-    rotationQuat = glm::quat(glm::radians(deltaRotation));
-    
-}
-    
-
-/// @brief 自定义转轴旋转
-/// @param angle 弧度
-/// @param axis 转轴
-/// @return 旋转四元数
-void QuaternionTransForm::SelfDefineAxisRotate()
-{  
-    float deltaRotation = slefDefineTargetRotate - slefDefineInitRotation;
-    rotationQuat = glm::angleAxis(glm::radians(deltaRotation),slefDefineAxis);
-}
-
-void QuaternionTransForm::MouseMove(float xposIn,float yposIn)
-{
-    xposIn *= mouseSensitivity;
-    yposIn *= mouseSensitivity;
-    targetRotation.x += yposIn;
-    targetRotation.y += xposIn;
-}
-
-void QuaternionTransForm::MouseScroll(float yoffset)
-{
-    //滑轮向前，视野变小，同样的显示区域内物体会变大
-    fovY -= yoffset;
-    if (fovY < 1.0f)
-        fovY = 1.0f;
-    if (fovY > 90.0f)
-        fovY = 90.0f;
-}
-
-void QuaternionTransForm::KeyBoardMove(float delta)
-{
-    assert(moveObject != MoveObject::CAMERA);
-    switch(movement)
-    {
-    case Movement::FORMWARD: 
-        position += forward * delta;break;
-    case Movement::BACKWARD:
-        position += -(forward * delta);break;
-    case Movement::LEFT:
-        position += -(right * delta);break;
-    case Movement::RIGHT:
-        position += right * delta;break;
-    }
-    
-}
-
-void QuaternionTransForm::OnGUI()
-{
-    ImGui::DragFloat3((name + "Postion").c_str(), (float *)&position, 0.5f, -100.0f, 100.0f);
-
-    if (moveObject == MoveObject::CAMERA)
-    {
-        ImGui::DragFloat((name + "FovY").c_str(),(float*)&fovY,0.05f, 1.0f, 90.0f);
-        ImGui::DragFloat((name + "NearZ").c_str(),(float*)&nearZ,0.01f,0.1f,100.0f);
-        ImGui::DragFloat((name + "FarZ").c_str(),(float*)&farZ,0.01f,0.1f,100.0f);
-        ImGui::DragFloat((name + "MouseSensitivity").c_str(),(float*)&mouseSensitivity,0.01f,0.01f,100.0f);
-    }
-
-    if(moveObject == MoveObject::RENDEROBJECT)
-    {
-        ImGui::DragFloat3((name + "Scale").c_str(), (float *)&scale, 0.005f, 0.1f, 10.0f);
-    }
-    //判断是否启用自定义转轴
-    ImGui::Checkbox((name + "EnableSelfRotationAxis").c_str(),&selfRoationAxisFlag);
-    if(selfRoationAxisFlag)
-    {
-        //自定义转轴更新就重置初始旋转量
-        if(ImGui::DragFloat3((name + "SelfRotationAxis").c_str(),(float *)&slefDefineAxis,0.05f,0.0f,100.0f))
-        {
-            //避免0,0,0转轴的未定义行为
-            if(slefDefineAxis == vec3(0,0,0))
-            {
-                slefDefineAxis = vec3(1,0,0);
-            }
-            slefDefineInitRotation = 0;
-        }
-        //设置自定转轴旋转量
-        ImGui::DragFloat((name + "SelfTargetRotate").c_str(),(float *)&slefDefineTargetRotate,0.05f,-180.0f,180.0f);
-    }
-    //自转yaw,pitch,roll
-    else
-    {
-        ImGui::DragFloat3((name + "TargetRotation").c_str(),(float *)&targetRotation, 0.5f, -180.0f, 180.0f);
-    }
-
-}
-#pragma endregion
 
 #pragma region Input
 // GLFWwindow* Input::window = nullptr;
@@ -369,6 +146,7 @@ void QuaternionCamera::SetCameraFarZ(float farZ)
 
 QuaternionCamera::~QuaternionCamera()
 {
+    cameraNum--;
 }
 
 void QuaternionCamera::OnGUI()
@@ -445,7 +223,7 @@ RenderObject::~RenderObject()
 
 #pragma rergion Cube : public RenderObject
 int Cube::cubeNum = 0;
-Cube::Cube(vec3 position, vec3 forward, vec3 right):RenderObject()
+Cube::Cube(vec3 position, vec3 forward, vec3 right):RenderObject(),shader("../../shader/objectShader/object.vs","../../shader/objectShader/object.fs")
 {
     cubeID = cubeNum++;
     name = "Cube_" + std::to_string(cubeID);
@@ -466,6 +244,7 @@ Cube::Cube(vec3 position, vec3 forward, vec3 right):RenderObject()
 
 Cube::~Cube()
 {
+    cubeNum--;
 }
 
 void Cube::RenderInit(unsigned int diffuseMap, unsigned int normalMap)
@@ -489,10 +268,12 @@ void Cube::RenderInit(unsigned int diffuseMap, unsigned int normalMap)
     glEnableVertexAttribArray(3);
 }
 
-void Cube::Render(Shader& shader)
+void Cube::Render()
 {
     shader.use();
     glBindVertexArray(VAO);
+    // std::cout << "VAO: " << VAO << std::endl;
+    // std::cout << "VBO: " << VBO << std::endl;
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuseMap);
     glActiveTexture(GL_TEXTURE1);
@@ -512,7 +293,7 @@ void Cube::Update()
     transform->Update();
 }
 
-void Cube::SetShader(Shader &shader,Object* viewObject)
+void Cube::SetShader(Object* viewObject)
 {
     QuaternionTransForm* viewTransform = dynamic_cast<QuaternionTransForm*> (viewObject); 
     shader.use();
@@ -530,8 +311,9 @@ void Cube::SetShader(Shader &shader,Object* viewObject)
 
 }
 
-Cube::Cube(Cube &&other):RenderObject(std::move(other))
+Cube::Cube(Cube &&other):RenderObject(std::move(other)),shader(std::move(other.shader))
 {
+    this->cubeID = other.cubeID;
 }
 
 #pragma endregion
@@ -634,11 +416,11 @@ DirctionLight::DirctionLight(vec3 lightColor, vec3 position, vec3 forward, vec3 
 //     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 // }
 
-void DirctionLight::SetShader(Shader &shader)
+void DirctionLight::SetShader(Shader& shader ,bool selectLight)
 {
     //启用光源
     shader.use();
-    shader.setBool("directionLight[" + std::to_string(dirctionLightID) + "].flag",1);
+    shader.setBool("directionLight[" + std::to_string(dirctionLightID) + "].flag",selectLight);
     shader.setVec3("directionLight[" + std::to_string(dirctionLightID) + "].color",lightColor);
     shader.setVec3("directionLight[" + std::to_string(dirctionLightID) + "].pos",transform->position);
     // std::cout<<"directionLight->position: "<<transform->position.x<< "+"<<transform->position.y<< "+"<<transform->position.z<<std::endl;
@@ -706,11 +488,11 @@ PointLight::PointLight(vec3 lightColor, vec3 position, vec3 forward, vec3 right)
     transform->right = right;
     this->lightColor = lightColor;
 }
-void PointLight::SetShader(Shader &shader)
+void PointLight::SetShader(Shader& shader ,bool selectLight)
 {
     //启用光源
     shader.use();
-    shader.setBool("pointLight[" + std::to_string(pointLightID) + "].flag",1);
+    shader.setBool("pointLight[" + std::to_string(pointLightID) + "].flag",selectLight);
     shader.setVec3("pointLight[" + std::to_string(pointLightID) + "].pos",transform->position);
     shader.setVec3("pointLight[" + std::to_string(pointLightID) + "].front",-transform->forward);
     // std::cout<<"pointLight->forward: "<<transform->forward.x<< "+"<<transform->forward.y<< "+"<<transform->forward.z<<std::endl;
@@ -761,10 +543,10 @@ SpotLight::SpotLight(vec3 lightColor, vec3 position, vec3 forward, vec3 right)
     this->lightColor = lightColor;
 }
 
-void SpotLight::SetShader(Shader &shader)
+void SpotLight::SetShader(Shader& shader,bool selectLight)
 {
     shader.use();
-    shader.setBool("spotLight[" + std::to_string(spotLightID) + "].flag",1);
+    shader.setBool("spotLight[" + std::to_string(spotLightID) + "].flag",selectLight);
     shader.setVec3("spotLight[" + std::to_string(spotLightID) + "].pos",transform->position);
     shader.setVec3("spotLight[" + std::to_string(spotLightID) + "].front",-transform->forward);
     shader.setVec3("spotLight[" + std::to_string(spotLightID) + "].color",lightColor);
@@ -805,7 +587,14 @@ SpotLight::SpotLight(SpotLight &&other):AbstractLight(std::move(other))
 #pragma endregion
 
 QuaternionCamera* Setting::MainCamera = nullptr;
-GLFWwindow* Setting::window = nullptr;
+GLFWwindow *Setting::window = nullptr;
+vector<unique_ptr<QuaternionCamera>> Setting::cameras;
+vector<unique_ptr<SkyBox>> Setting::skyBoxs;
+vector<unique_ptr<Cube>> Setting::cubes;
+vector<unique_ptr<Model>> Setting::models;
+vector<unique_ptr<DirctionLight>> Setting::dirctionLights;
+vector<unique_ptr<PointLight>> Setting::pointLights;
+vector<unique_ptr<SpotLight>> Setting::spotLights;
 glm::vec2 Setting::pWindowSize = vec2(0,0);//真正的窗口尺寸
 
 #pragma region 窗口事件及图像处理模块
@@ -856,7 +645,7 @@ unsigned int loadTexture(const char*  path,bool reverse)
 
 #pragma region SkyBox : publicObject
 int SkyBox::SkyBoxNum = 0;
-SkyBox::SkyBox()
+SkyBox::SkyBox():shader("../../shader/skyBox/skyBox.vs","../../shader/skyBox/skyBox.fs")
 {
     SkyBoxID = SkyBoxNum++;
     name = "SkyBox" + std::to_string(SkyBoxID);
@@ -871,6 +660,7 @@ SkyBox::SkyBox()
 }
 SkyBox::~SkyBox()
 {
+    SkyBoxNum--;
 }
 void SkyBox::RenderInit(const std::vector<string>& faces)
 {  
@@ -923,7 +713,7 @@ void SkyBox::RenderInit(const std::vector<string>& faces)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
-void SkyBox::SetShader(Shader &shader,Object* viewObject)
+void SkyBox::SetShader(Object* viewObject)
 {
     QuaternionTransForm* viewTransform = dynamic_cast<QuaternionTransForm*>(viewObject);
     shader.use();
@@ -943,7 +733,7 @@ void SkyBox::SetShader(Shader &shader,Object* viewObject)
     shader.setInt("skybox", 0); 
     shader.setInt("shadowMap",1);
 }
-void SkyBox::Render(Shader &shader)
+void SkyBox::Render()
 {
     
     glDepthFunc(GL_LEQUAL);
@@ -975,7 +765,7 @@ void SkyBox::Update()
 }
 SkyBox::SkyBox(SkyBox && other):Object(std::move(other)),
 SkyBoxID(other.SkyBoxID),VBO(other.VBO),VAO(other.VAO),IBO(other.IBO),textureID(other.textureID),
-transfrom(std::move(other.transfrom))
+transfrom(std::move(other.transfrom)),shader(std::move(other.shader))
 {
 }
 #pragma endregion

@@ -77,6 +77,7 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "unordered_set": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "cassert": "cpp"
     }
 }

@@ -11,7 +11,7 @@
 class Shader
 {
 private:
-    // unsigned int ShaderID;
+    unsigned int ShaderID;
     bool showCode = 0;
     void checkCompileErrors(GLuint shader, std::string type);
 public:
@@ -103,7 +103,7 @@ public:
         if(geometryPath != nullptr)
             glDeleteShader(geometry);
     }
-unsigned int ShaderID;
+
     unsigned GetShaderID(); 
     // activate the shader
     // ------------------------------------------------------------------------

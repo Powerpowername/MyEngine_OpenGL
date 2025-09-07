@@ -230,6 +230,7 @@ CMakeFiles/app.dir/main.cpp.obj: E:/Project/MyEngine_OpenGL/main.cpp \
   E:/Project/MyEngine_OpenGL/include/Model/mesh.hpp \
   E:/Project/MyEngine_OpenGL/include/Model/model.hpp \
   E:/Project/MyEngine_OpenGL/include/MyEngine.h \
+  E:/Project/MyEngine_OpenGL/include/QuaternionTransForm.hpp \
   E:/Project/MyEngine_OpenGL/include/assimp/Compiler/poppack1.h \
   E:/Project/MyEngine_OpenGL/include/assimp/Compiler/pushpack1.h \
   E:/Project/MyEngine_OpenGL/include/assimp/Importer.hpp \
@@ -442,10 +443,12 @@ CMakeFiles/app.dir/main.cpp.obj: E:/Project/MyEngine_OpenGL/main.cpp \
   E:/Project/MyEngine_OpenGL/include/winConfig/winConfig.h
 
 CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine.cpp \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/algorithm \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/array \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/backward/auto_ptr.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/backward/binders.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bit \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/algorithmfwd.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/align.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/alloc_traits.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/allocated_ptr.h \
@@ -463,6 +466,7 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/cpp_type_traits.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/cxxabi_forced.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/cxxabi_init_exception.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/deque.tcc \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/enable_special_members.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/erase_if.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/exception.h \
@@ -503,10 +507,13 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/sstream.tcc \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/std_abs.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/std_function.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_algo.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_algobase.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_bvector.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_construct.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_deque.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_function.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_heap.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_iterator.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_iterator_base_funcs.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_iterator_base_types.h \
@@ -519,8 +526,10 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/streambuf_iterator.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/string_view.tcc \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stringfwd.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/uniform_int_dist.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/unique_ptr.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/unordered_map.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/unordered_set.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/uses_allocator.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/uses_allocator_args.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/utility.h \
@@ -539,10 +548,12 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdint \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdio \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdlib \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstring \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cwchar \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cwctype \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/debug/assertions.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/debug/debug.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/deque \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/exception \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ext/aligned_buffer.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ext/alloc_traits.h \
@@ -564,6 +575,7 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/new \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ostream \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/execution_defs.h \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/glue_algorithm_defs.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/glue_memory_defs.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/pstl_config.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/sstream \
@@ -589,6 +601,7 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/type_traits \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/typeinfo \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/unordered_map \
+  E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/unordered_set \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/vector \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/atomic_word.h \
   E:/Compiler/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
@@ -645,12 +658,46 @@ CMakeFiles/app.dir/src/MyEngine.cpp.obj: E:/Project/MyEngine_OpenGL/src/MyEngine
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/string.h \
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/sys/timeb.h \
+  E:/Compiler/mingw64/x86_64-w64-mingw32/include/sys/types.h \
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/vadefs.h \
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/wchar.h \
   E:/Compiler/mingw64/x86_64-w64-mingw32/include/wctype.h \
   E:/Project/MyEngine_OpenGL/include/GLFW/glfw3.h \
   E:/Project/MyEngine_OpenGL/include/KHR/khrplatform.h \
+  E:/Project/MyEngine_OpenGL/include/Model/mesh.hpp \
+  E:/Project/MyEngine_OpenGL/include/Model/model.hpp \
   E:/Project/MyEngine_OpenGL/include/MyEngine.h \
+  E:/Project/MyEngine_OpenGL/include/QuaternionTransForm.hpp \
+  E:/Project/MyEngine_OpenGL/include/assimp/Compiler/poppack1.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/Compiler/pushpack1.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/Importer.hpp \
+  E:/Project/MyEngine_OpenGL/include/assimp/MathFunctions.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/aabb.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/anim.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/camera.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/color4.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/color4.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/config.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/defs.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/light.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/material.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/material.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/matrix3x3.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/matrix3x3.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/matrix4x4.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/matrix4x4.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/mesh.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/metadata.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/postprocess.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/quaternion.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/quaternion.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/scene.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/texture.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/types.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/vector2.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/vector2.inl \
+  E:/Project/MyEngine_OpenGL/include/assimp/vector3.h \
+  E:/Project/MyEngine_OpenGL/include/assimp/vector3.inl \
   E:/Project/MyEngine_OpenGL/include/glad/glad.h \
   E:/Project/MyEngine_OpenGL/include/glm/common.hpp \
   E:/Project/MyEngine_OpenGL/include/glm/detail/_fixes.hpp \
@@ -3305,6 +3352,8 @@ E:/Project/MyEngine_OpenGL/include/Model/mesh.hpp:
 E:/Project/MyEngine_OpenGL/include/Model/model.hpp:
 
 E:/Project/MyEngine_OpenGL/include/glm/ext/vector_uint2.hpp:
+
+E:/Project/MyEngine_OpenGL/include/QuaternionTransForm.hpp:
 
 E:/Project/MyEngine_OpenGL/include/assimp/Compiler/pushpack1.h:
 
