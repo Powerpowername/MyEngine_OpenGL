@@ -26,7 +26,7 @@ void Shader::checkCompileErrors(GLuint shader, std::string type)
     }
 }
 
-unsigned Shader::GetShaderID()
+unsigned int Shader::GetShaderID()
 {
     return ShaderID;
 }

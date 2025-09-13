@@ -17,7 +17,7 @@ struct Vertex{
     float m_Weights[MAX_BONE_INFLUENCE];
 };
 struct Texture
-{
+{ 
     unsigned int id;
     string type;
     string path;    

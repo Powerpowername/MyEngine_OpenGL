@@ -10,7 +10,7 @@
 
 class Shader
 {
-private:
+protected:
     unsigned int ShaderID;
     bool showCode = 0;
     void checkCompileErrors(GLuint shader, std::string type);
@@ -104,7 +104,7 @@ public:
             glDeleteShader(geometry);
     }
 
-    unsigned GetShaderID(); 
+    unsigned int GetShaderID(); 
     // activate the shader
     // ------------------------------------------------------------------------
     void use() 
