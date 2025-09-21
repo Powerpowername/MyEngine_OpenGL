@@ -75,3 +75,6 @@ QuaternionTransForm：中抽象封装了，绘制物体与摄像机的坐标系�
 # 视屏演示
 ![alt text](markdownResource/demo.gif)
 
+# 参考资料
+[learnopengl官方教程]
+https://learnopengl-cn.github.io/
