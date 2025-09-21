@@ -35,7 +35,7 @@ QuaternionTransForm：中抽象封装了，绘制物体与摄像机的坐标系�
 
 工厂：工厂主要负责对各个元素的生成更新与GUI显示，简化对各个对象的控制操作，点击对应add按钮即可生成相应对象。详细架构参考架构图。
 
-![alt text](image.png)
+![alt text](markdownResource/Window.png)
 
 窗口：设计Window类型简化glfw窗口生成操作，并提供获取窗口指针的等实用方法。  
 
@@ -73,6 +73,5 @@ QuaternionTransForm：中抽象封装了，绘制物体与摄像机的坐标系�
 点击Add Model 将会弹出模态窗口，选择模型文件，继续点击Add即可生成model
 
 # 视屏演示
-<video controls src="markdownResource/demo.mp4" title="Title"></video>
-
+![alt text](markdownResource/demo.gif)
 
