@@ -26,8 +26,16 @@ int main()
         // 同步更新相机宽高比
         if (Setting::MainCamera && Setting::MainCamera->transfrom)
         {
-            Setting::MainCamera->transfrom->aspectRatio = (float)width / height;
+            if (width > 0 && height > 0) // 过滤无效尺寸（最小化时width/height为0）
+            {
+                Setting::MainCamera->transfrom->aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+            }
+            else
+            {
+                Setting::MainCamera->transfrom->aspectRatio = 16.0f / 9.0f;
+            }
         }
+
     });
     glfwSetCursorPosCallback(window.Get(),[](GLFWwindow* window, double xpos, double ypos){
         //仅在第一次调用静态对象时会被初始化，后续不会再调用初始化
